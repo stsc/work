@@ -1,7 +1,7 @@
 #!/usr/bin/perl
-#==========================
-# Finde Links im CZ-Prozess
-#==========================
+#===============================
+# Finde HTML Links im CZ-Prozess
+#===============================
 # Benutzung:
 # °°°°°°°°°°
 # Das Script muss über die Powershell-Konsole via
@@ -9,7 +9,7 @@
 # Mögliche Aufrufoptionen sind über die Hilfe Ausgabe
 # (perl .\find.pl --help) oder Dokumentation einsehbar.
 # -----------------------------------------------------
-# Version: v0.03 - 2020-10-27 / ssc
+# Version: v0.04 - 2020-11-07 / ssc
 # ---------------------------------
 
 use strict;
@@ -24,7 +24,7 @@ use HTML::LinkExtor;
 use LWP::UserAgent;
 #use Win32::Console;
 
-my $VERSION = '0.03';
+my $VERSION = '0.04';
 
 qx(chcp 65001 2>&1); # UTF-8, discard STDOUT
 binmode(STDOUT, ':utf8');
