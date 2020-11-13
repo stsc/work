@@ -3,17 +3,18 @@
 # Finde HTML Links im CZ-Prozess
 #===============================
 # Benutzung:
-# °°°°°°°°°°
-# Das Script muss über die Powershell-Konsole via
+# Â°Â°Â°Â°Â°Â°Â°Â°Â°Â°
+# Das Script muss Ã¼ber die Powershell-Konsole via
 # installiertem Perl-Interpreter aufgerufen werden.
-# Mögliche Aufrufoptionen sind über die Hilfe Ausgabe
+# MÃ¶gliche Aufrufoptionen sind Ã¼ber die Hilfe Ausgabe
 # (perl .\find.pl --help) oder Dokumentation einsehbar.
 # -----------------------------------------------------
-# Version: v0.04 - 2020-11-07 / ssc
+# Version: v0.05 - 2020-11-13 / ssc
 # ---------------------------------
 
 use strict;
 use warnings;
+use open qw(:std :utf8);
 use constant true  => 1;
 use constant false => 0;
 
@@ -24,10 +25,11 @@ use HTML::LinkExtor;
 use LWP::UserAgent;
 #use Win32::Console;
 
-my $VERSION = '0.04';
+my $VERSION = '0.05';
+
+my $Exclude_file = 'exclude.txt';
 
 qx(chcp 65001 2>&1); # UTF-8, discard STDOUT
-binmode(STDOUT, ':utf8');
 #my $CONSOLE = Win32::Console->new;
 #my $codepage_orig = $CONSOLE->OutputCP;
 #$CONSOLE->OutputCP(65001); # UTF-8
@@ -50,6 +52,13 @@ my $seen_link = false;
 my @links;
 
 my ($count_files, $count_links) = (0) x 2;
+
+my @exclusions;
+if (-e $Exclude_file) {
+    open(my $fh, '<', $Exclude_file) or die "Cannot open $Exclude_file for reading: $!\n";
+    chomp(@exclusions = <$fh>);
+    close($fh);
+}
 
 my $p = HTML::LinkExtor->new(\&callback);
 
@@ -96,6 +105,11 @@ sub callback
 
     return if $links{href} =~ /^#/;
     return if $links{href} =~ /^(?:javascript|mailto):/;
+
+    foreach my $exclude (@exclusions) {
+        next if $exclude =~ /^#/;
+        return if $links{href} =~ /\Q$exclude\E/;
+    }
 
     return if defined $opts{extension} && $links{href} !~ /\.\Q$opts{extension}\E$/;
 
