@@ -1,0 +1,11 @@
+body { font-family:'Open Sans', sans-serif; }
+table { background-color:#c0dd8c;
+        border:1px solid;
+}
+a:link { color:#fe5e14;
+         text-decoration:none; }
+a:visited { color:#fe5e14; }
+a:active { color:#fe5e14; }
+a:hover { text-decoration:underline; }
+.td { background-color:#79b61b; }
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
